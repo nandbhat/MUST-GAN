@@ -5,9 +5,9 @@ import os
 
 MISSING_VALUE = -1
 # fix PATH
-img_dir = '/hd1/matianxiang/MUST/datasets' # Using yourself root
-annotations_file = os.path.join(img_dir, 'fashion-resize-annotation-train.csv') # Change this for train or test
-save_path = os.path.join(img_dir, 'trainK') # 'trainK' or 'testK'
+img_dir = './datasets' # Using yourself root
+annotations_file = os.path.join(img_dir, 'fashion-resize-annotation-test.csv') # Change this for train or test
+save_path = os.path.join(img_dir, 'testK') # 'trainK' or 'testK'
 if not os.path.exists(save_path):
     os.makedirs(save_path)
 

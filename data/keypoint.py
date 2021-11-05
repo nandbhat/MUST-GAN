@@ -27,10 +27,9 @@ class KeyDataset(BaseDataset):
             self.init_categories_train(opt.unpairLst)
         elif opt.phase == 'test':
             self.init_categories_test(opt.pairLst)
-        
+
         self.transform = get_transform(opt)
 
-        
     def init_categories_train(self, unpairLst):
         unpairlist = pd.read_csv(unpairLst)
         self.size = len(unpairlist)
@@ -41,7 +40,6 @@ class KeyDataset(BaseDataset):
             self.imgs.append(img)
         print('Loading data unpairs finished ...')
 
-        
     def init_categories_test(self, pairLst):
         pairlist = pd.read_csv(pairLst)
         self.size = len(pairlist)
@@ -52,7 +50,6 @@ class KeyDataset(BaseDataset):
             self.imgs.append(img)
 
         print('Loading data pairs finished ...')
-
 
     def __getitem__(self, index):
         if self.opt.phase == 'train':
@@ -68,9 +65,9 @@ class KeyDataset(BaseDataset):
             BP2_img = np.load(BP2_path)
             PCM2_path = os.path.join(self.dir_conn_map, P1_name + '.npy')
             PCM2_mask = np.load(PCM2_path)
-            BP2 = torch.from_numpy(BP2_img).float() #h,w,c
-            BP2 = BP2.transpose(2, 0) #c,w,h
-            BP2 = BP2.transpose(2, 1) #c,h,w 
+            BP2 = torch.from_numpy(BP2_img).float()  # h,w,c
+            BP2 = BP2.transpose(2, 0)  # c,w,h
+            BP2 = BP2.transpose(2, 1)  # c,h,w
             PCM2_mask = torch.from_numpy(PCM2_mask).float()
             BP2 = torch.cat([BP2, PCM2_mask], 0)
 
@@ -82,7 +79,7 @@ class KeyDataset(BaseDataset):
             SP1 = np.zeros((self.SP_input_nc, 256, 176), dtype='float32')
             parti = np.random.randint(1, 8)
             for id in range(self.SP_input_nc):
-                if id == 6 or id == 7: # arms and legs
+                if id == 6 or id == 7:  # arms and legs
                     if np.random.random() > 0.7:
                         continue
                 SP1[id] = (SP1_data == id).astype('float32')
@@ -107,22 +104,24 @@ class KeyDataset(BaseDataset):
             PCM2_mask = np.load(PCM2_path)
             BP2_img = np.load(BP2_path)
             BP2 = torch.from_numpy(BP2_img).float()
-            BP2 = BP2.transpose(2, 0) #c,w,h
-            BP2 = BP2.transpose(2, 1) #c,h,w 
+            BP2 = BP2.transpose(2, 0)  # c,w,h
+            BP2 = BP2.transpose(2, 1)  # c,h,w
             PCM2_mask = torch.from_numpy(PCM2_mask).float()
             BP2 = torch.cat([BP2, PCM2_mask], 0)
 
             # semantic
-            SP1_name = self.split_name(P1_name, 'semantic_merge3')
-            SP1_path = os.path.join(self.dir_SP, SP1_name)
-            SP1_path = SP1_path[:-4] + '.npy'
+            print('>>>>>>>>>>>>>>>>>>>>' + P1_name)
+            directory = '/mnt/hdd0/nandan/active/must-gan/MUST-GAN/custom_images/segmentation/'
+            # SP1_name = self.split_name(P1_name, 'semantic_merge3')
+            # SP1_path = os.path.join(self.dir_SP, SP1_name)
+            SP1_path = directory + P1_name.split('.')[0] + '.npy'
+            print('>>>>>>>>>>>>>' + SP1_path)
             SP1_data = np.load(SP1_path)
             SP1 = np.zeros((self.SP_input_nc, 256, 176), dtype='float32')
             for id in range(self.SP_input_nc):
                 SP1[id] = (SP1_data == id).astype('float32')
 
             return {'P1': P1, 'SP1': SP1, 'P2': P2, 'BP2': BP2, 'P1_path': P1_name, 'P2_path': P2_name}
-
 
     def __len__(self):
         if self.opt.phase == 'train':
@@ -133,7 +132,7 @@ class KeyDataset(BaseDataset):
     def name(self):
         return 'KeyDataset'
 
-    def split_name(self,str,type):
+    def split_name(self, str, type):
         list = []
         list.append(type)
         if (str[len('fashion'):len('fashion') + 2] == 'WO'):
@@ -152,4 +151,3 @@ class KeyDataset(BaseDataset):
         for path in list:
             head = os.path.join(head, path)
         return head
-

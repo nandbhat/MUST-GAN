@@ -41,7 +41,8 @@ def make_dataset(dir):
             if is_image_file(fname):
                 path = os.path.join(root, fname)
                 path_names = path.split('/')
-                path_names = path_names[6: ]
+                print(path_names)
+                path_names = path_names[3: ]
                 path_names[2] = path_names[2].replace('_', '')
                 path_names[3] = path_names[3].split('_')[0] + "_" + "".join(path_names[3].split('_')[1: ])
                 path_names = 'fashion' + "".join(path_names)
@@ -57,4 +58,4 @@ def make_dataset(dir):
                     img_resize.save(os.path.join(test_root, path_names), 'JPEG', quality = 95)
                     print(os.path.join(test_root, path_names))
 
-make_dataset('/hd1/matianxiang/MUST/datasets/')# Using yourself root
+make_dataset('./datasets/')# Using yourself root

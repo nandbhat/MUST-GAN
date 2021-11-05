@@ -1,7 +1,7 @@
 # pose transfer
-python test.py --dataroot /hd1/matianxiang/MUST/datasets \
-                --pairLst /hd1/matianxiang/MUST/datasets/fashion-resize-pairs-test.csv \
-                --checkpoints_dir /hd1/matianxiang/MUST/check_points \
+python test.py --dataroot /mnt/hdd0/nandan/active/must-gan/MUST-GAN/datasets \
+                --pairLst /mnt/hdd0/nandan/active/must-gan/MUST-GAN/datasets/fashion-resize-pairs-test.csv \
+                --checkpoints_dir /mnt/hdd0/nandan/active/must-gan/MUST-GAN/check_points \
                 --results_dir ./results \
                 --name MUST-GAN/ \
                 --model MUST --phase test --dataset_mode keypoint --norm instance \
